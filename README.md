@@ -1,12 +1,38 @@
 # Terminal-Hangman
-A terminal Hangman game made in C.
-Some extra features includes:
+A simple, yet feature-full terminal Hangman game made in C.
+
+Some of the features are:
 - hints
 - score
 - difficulty levels
 - scoreboard
 - categories
-- etc.
+- 10,000+ words to guess
+- etc. (play to know more!)
+
+## Installing, Compiling and Running
+
+You need to have a C compiler installed (like GCC or Clang)
+
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/Term-xd/Terminal-Hangman
+```
+
+### Step 2: Move to the installed directory
+```bash
+cd Terminal-Hangman
+```
+
+### Step 3: Compile the Game
+```bash
+make
+```
+
+### And Run!
+```bash
+./game
+```
 
 ## Here are a few screenshot of the game:
 
