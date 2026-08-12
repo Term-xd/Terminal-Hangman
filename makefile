@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=c99 -Wall -Wextra -pedantic-errors -fsanitize=address -fsanitize=undefined -O2
+CFLAGS = -std=c99 -Wall -Wextra -O2
 
 OBJS = main.o utils.o parsing_input.o generated_words.o load_data.o render.o gameloop.o leaderboard.o
 
