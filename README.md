@@ -38,7 +38,7 @@ make
 
 ----
 
-## Here are a few screenshot of the game:
+## Here are a few screenshots of the game:
 
 Home:
 
