@@ -10,6 +10,8 @@ Some of the features are:
 - 10,000+ words to guess
 - etc. (play to know more!)
 
+----
+
 ## Installing, Compiling and Running
 
 You need to have a C compiler installed (like GCC or Clang)
@@ -33,6 +35,8 @@ make
 ```bash
 ./game
 ```
+
+----
 
 ## Here are a few screenshot of the game:
 
