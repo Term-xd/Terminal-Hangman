@@ -7,7 +7,7 @@
 #include "generated_words.h"
 
 /* TODO: Wonder if 128 of `input[128]` should be a macro */
-#define MAX_WORD_LEN 64 // TODO: This should be provided by generated_words.h
+#define MAX_WORD_LEN 64  // TODO: This should be provided by generated_words.h
 #define DEFAULT_MAX_WRONG 6
 
 typedef enum
@@ -27,18 +27,18 @@ typedef enum
 
 typedef struct
 {
-  const WordEntry *word_entry;
-  char             masked[MAX_WORD_LEN];
-  bool             guessed[26];
-  int              wrong_guesses;
-  int              max_wrong;
-  GameStatus       status;
-  Difficulty       difficulty;
-  time_t           started_at;
-  time_t           ended_at;
-  int              hint_used;
-  int              revealed_from_hint;
-  int              score;
+  const WordEntry * word_entry;
+  char              masked[MAX_WORD_LEN];
+  bool              guessed[26];
+  int               wrong_guesses;
+  int               max_wrong;
+  GameStatus        status;
+  Difficulty        difficulty;
+  time_t            started_at;
+  time_t            ended_at;
+  int               hint_used;
+  int               revealed_from_hint;
+  int               score;
 } GameState;
 
 typedef struct
@@ -48,4 +48,4 @@ typedef struct
   int  losses;
 } PlayerState;
 
-#endif // !DATA_H
+#endif  // !DATA_H
