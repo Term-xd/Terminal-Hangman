@@ -3,9 +3,6 @@
 #include "leaderboard.h"
 #include "utils.h"
 
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,22 +24,19 @@ int main(void)
 
   clear_screen();
 
-  PlayerState player = {.name = "", .wins = 0, .losses = 0};
+  PlayerState player = { .name = "", .wins = 0, .losses = 0 };
 
   printf("Enter your name or press Enter to play as Guest: ");
-  char name[64];
-  if (fgets(name, sizeof(name), stdin))
+  char            name[64];
+  UserInputResult result = INPUT_INVALID;
+  result                 = get_user_input(stdin, name, sizeof name);
+  if (result == INPUT_OK || result == INPUT_TRUNCATED)
   {
     trim_leading_and_trailing_whitspaces(name);
     if (name[0] != '\0')
     {
       strncpy(player.name, name, sizeof(player.name) - 1);
     }
-  }
-
-  if (strlen(name) > 62)
-  {
-    discard_rest_of_line();
   }
 
   clear_screen();
@@ -58,25 +52,22 @@ int main(void)
     discard_rest_of_line();
     switch (option)
     {
-      case '1': start_game_loop(&player, DIFF_EASY);
-                break;
-      case '2': start_game_loop(&player, DIFF_MEDIUM);
-                break;
-      case '3': start_game_loop(&player, DIFF_HARD);
-                break;
+      case '1': start_game_loop(&player, DIFF_EASY); break;
+      case '2': start_game_loop(&player, DIFF_MEDIUM); break;
+      case '3': start_game_loop(&player, DIFF_HARD); break;
       case '4': // show_session_history();
-                printf("Not implemented yet. But it is easy. So feel free to make a PR.");
+                printf("Not implemented yet. But it is easy. So feel "
+                      "free to make a PR.");
                 break;
       case '5': show_leaderboard();
                 printf("Press Enter to continue...");
                 discard_rest_of_line();
                 break;
-      case '6': keep_playing = false;
-                break;
-      default:  printf("\nInvalid Choice\n");
-                printf("Press Enter to continue...");
-                discard_rest_of_line();
-                break;
+      case '6': keep_playing = false; break;
+      default: printf("\nInvalid Choice\n");
+               printf("Press Enter to continue...");
+               discard_rest_of_line();
+               break;
     }
     clear_screen();
   }
@@ -86,7 +77,8 @@ int main(void)
   {
     printf(", %s", player.name);
   }
-  printf(". Wins: %d Losses: %d\n", player.wins, player.losses);
+  printf(". Wins: %d Losses: %d\n", player.wins,
+         player.losses);
 
   return EXIT_SUCCESS;
 }
