@@ -24,8 +24,8 @@ typedef struct
 
 } GameRecord;
 
-int save_game_record(const GameRecord *record);
+int save_game_record(const GameRecord * record);
 
 void show_leaderboard(void);
 
-#endif // LEADERBOARD_H
+#endif  // LEADERBOARD_H
