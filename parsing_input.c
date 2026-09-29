@@ -16,25 +16,30 @@ static void print_help(void)
   printf("Commands:\n");
   printf("  :help    Show this help text\n");
   printf("  :exit    Quit current game session\n");
-  printf("  :hint    Reveal one unrevealed letter (with penalty)\n");
-  printf("Guesses: enter a single letter a-z (case-insensitive)\n");
+  printf("  :hint    Reveal one unrevealed letter (with "
+         "penalty)\n");
+  printf("Guesses: enter a single letter a-z "
+         "(case-insensitive)\n");
 }
 
-static void update_score_from_hints(GameState *game, int letters_revealed_now)
+static void update_score_from_hints(GameState * game,
+                                    int         letters_revealed_now)
 {
-  float length = (float)game->word_entry->length -
-                 1;
+  float length = (float)game->word_entry->length - 1;
 
   for (int i = game->revealed_from_hint;
-       i < game->revealed_from_hint + letters_revealed_now; i++)
+       i < game->revealed_from_hint + letters_revealed_now;
+       i++)
   {
     float fraction = (float)(i + 1) / length;
-    float penalty  = 10.0f + ((length * 10.0f) - 10.0f) * fraction * fraction;
+    float penalty
+        = 10.0f
+          + ((length * 10.0f) - 10.0f) * fraction * fraction;
     game->score -= (int)penalty;
   }
 }
 
-static bool is_fully_revealed(const GameState *game)
+static bool is_fully_revealed(const GameState * game)
 {
   for (int i = 0; i < (int)game->word_entry->length; i++)
   {
@@ -46,14 +51,14 @@ static bool is_fully_revealed(const GameState *game)
   return true;
 }
 
-static void handle_easy_or_medium_hint(GameState *game)
+static void handle_easy_or_medium_hint(GameState * game)
 {
   int hidden_count = 0;
 
   for (int i = 0; i < (int)game->word_entry->length; i++)
   {
-    if (game->masked[i] == '_' &&
-        isalpha((unsigned char)game->word_entry->word[i]))
+    if (game->masked[i] == '_'
+        && isalpha((unsigned char)game->word_entry->word[i]))
     {
       hidden_count++;
     }
@@ -73,8 +78,8 @@ static void handle_easy_or_medium_hint(GameState *game)
 
   for (int i = 0; i < (int)game->word_entry->length; i++)
   {
-    if (game->masked[i] == '_' &&
-        isalpha((unsigned char)game->word_entry->word[i]))
+    if (game->masked[i] == '_'
+        && isalpha((unsigned char)game->word_entry->word[i]))
     {
       if (target == 0)
       {
@@ -115,14 +120,14 @@ static void handle_easy_or_medium_hint(GameState *game)
   }
 }
 
-static void handle_hard_hint(GameState *game)
+static void handle_hard_hint(GameState * game)
 {
   int hidden_count = 0;
 
   for (int i = 0; i < (int)game->word_entry->length; i++)
   {
-    if (game->masked[i] == '_' &&
-        isalpha((unsigned char)game->word_entry->word[i]))
+    if (game->masked[i] == '_'
+        && isalpha((unsigned char)game->word_entry->word[i]))
     {
       hidden_count++;
     }
@@ -149,8 +154,8 @@ static void handle_hard_hint(GameState *game)
 
   for (int i = 0; i < (int)game->word_entry->length; i++)
   {
-    if (game->masked[i] == '_' &&
-        isalpha((unsigned char)game->word_entry->word[i]))
+    if (game->masked[i] == '_'
+        && isalpha((unsigned char)game->word_entry->word[i]))
     {
       if (target == 0)
       {
@@ -191,11 +196,12 @@ static void handle_hard_hint(GameState *game)
   }
 }
 
-static void handle_hint(GameState *game)
+static void handle_hint(GameState * game)
 {
   /* TODO: Wondet if hint limit could be added */
 
-  if (game->difficulty == DIFF_EASY || game->difficulty == DIFF_MEDIUM)
+  if (game->difficulty == DIFF_EASY
+      || game->difficulty == DIFF_MEDIUM)
   {
     handle_easy_or_medium_hint(game);
   }
@@ -205,7 +211,7 @@ static void handle_hint(GameState *game)
   }
 }
 
-static void parse_command(GameState *game, char input[128])
+static void parse_command(GameState * game, char input[128])
 {
   if (strcmp(input, ":help") == 0)
   {
@@ -242,14 +248,14 @@ static bool is_input_a_valid_letter(char input[128])
   return isalpha((unsigned char)input[0]) && input[1] == '\0';
 }
 
-static bool reveal_letter(GameState *game, char letter)
+static bool reveal_letter(GameState * game, char letter)
 {
   bool found = false;
   int  n     = (int)game->word_entry->length;
   for (int i = 0; i < n; i++)
   {
-    if (tolower(game->word_entry->word[i]) == tolower(letter) &&
-        game->masked[i] == '_')
+    if (tolower(game->word_entry->word[i]) == tolower(letter)
+        && game->masked[i] == '_')
     {
       game->masked[i] = letter;
       found           = true;
@@ -258,7 +264,8 @@ static bool reveal_letter(GameState *game, char letter)
   return found;
 }
 
-static void check_guess(GameState *game, char letter, char *last_guessed)
+static void check_guess(GameState * game, char letter,
+                        char * last_guessed)
 {
   if (game->guessed[letter - 'a'])
   {
@@ -307,7 +314,8 @@ static void check_guess(GameState *game, char letter, char *last_guessed)
   last_guessed[0] = letter;
 }
 
-void parse_input(GameState *game, char input[128], char *last_guessed)
+void parse_input(GameState * game, char input[128],
+                 char * last_guessed)
 {
   if (is_input_a_command(input))
   {
@@ -320,7 +328,8 @@ void parse_input(GameState *game, char input[128], char *last_guessed)
   }
   else
   {
-    printf("\nInvalid input. Enter a single letter a-z or a command starting "
+    printf("\nInvalid input. Enter a single letter a-z or a "
+           "command starting "
            "with ':'\n");
     printf("\nPress Enter to continue...");
     discard_rest_of_line();
