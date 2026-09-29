@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define STATS_FILENAME "hangman_stats.csv"
+#define STATS_FILENAME  "hangman_stats.csv"
 #define MAX_NAME_LENGTH 128
 #define MAX_LINE_LENGTH 512
 
@@ -16,43 +16,36 @@ typedef struct
 
 } Leaderboard;
 
-static const char *difficulty_to_string(Difficulty difficulty)
+static const char * difficulty_to_string(Difficulty difficulty)
 {
   switch (difficulty)
   {
-  case DIFF_EASY:
-    return "EASY";
+    case DIFF_EASY: return "EASY";
 
-  case DIFF_MEDIUM:
-    return "MEDIUM";
+    case DIFF_MEDIUM: return "MEDIUM";
 
-  case DIFF_HARD:
-    return "HARD";
+    case DIFF_HARD: return "HARD";
 
-  default:
-    return "UNKNOWN";
+    default: return "UNKNOWN";
   }
 }
 
-static const char *status_to_string(GameStatus status)
+static const char * status_to_string(GameStatus status)
 {
   switch (status)
   {
-  case STATUS_WON:
-    return "WON";
+    case STATUS_WON: return "WON";
 
-  case STATUS_LOST:
-    return "LOST";
+    case STATUS_LOST: return "LOST";
 
-  case STATUS_EXIT:
-    return "QUIT";
+    case STATUS_EXIT: return "QUIT";
 
-  default:
-    return "UNKNOWN";
+    default: return "UNKNOWN";
   }
 }
 
-static int parse_difficulty(const char *text, Difficulty *result)
+static int parse_difficulty(const char * text,
+                            Difficulty * result)
 {
   if (strcmp(text, "EASY") == 0)
   {
@@ -75,7 +68,7 @@ static int parse_difficulty(const char *text, Difficulty *result)
   return 0;
 }
 
-static int parse_status(const char *text, GameStatus *result)
+static int parse_status(const char * text, GameStatus * result)
 {
   if (strcmp(text, "WON") == 0)
   {
@@ -98,7 +91,7 @@ static int parse_status(const char *text, GameStatus *result)
   return 0;
 }
 
-static void write_csv_string(FILE *fp, const char *text)
+static void write_csv_string(FILE * fp, const char * text)
 {
   fputc('"', fp);
 
@@ -120,9 +113,9 @@ static void write_csv_string(FILE *fp, const char *text)
   fputc('"', fp);
 }
 
-int save_game_record(const GameRecord *record)
+int save_game_record(const GameRecord * record)
 {
-  FILE *fp = fopen(STATS_FILENAME, "a");
+  FILE * fp = fopen(STATS_FILENAME, "a");
 
   if (fp == NULL)
   {
@@ -133,8 +126,9 @@ int save_game_record(const GameRecord *record)
 
   fprintf(fp, ",%s,%s,%d,%ld,%d,%d,%ld\n",
           difficulty_to_string(record->difficulty),
-          status_to_string(record->status), record->score, record->duration,
-          record->hint_used, record->wrong_guesses, (long)record->started_at);
+          status_to_string(record->status), record->score,
+          record->duration, record->hint_used,
+          record->wrong_guesses, (long)record->started_at);
 
   if (ferror(fp))
   {
@@ -147,11 +141,13 @@ int save_game_record(const GameRecord *record)
   return 1;
 }
 
-static void remove_line_ending(char *line)
+static void remove_line_ending(char * line)
 {
   size_t length = strlen(line);
 
-  while (length > 0 && (line[length - 1] == '\n' || line[length - 1] == '\r'))
+  while (length > 0
+         && (line[length - 1] == '\n'
+             || line[length - 1] == '\r'))
   {
     line[length - 1] = '\0';
 
@@ -159,8 +155,8 @@ static void remove_line_ending(char *line)
   }
 }
 
-static int read_csv_field(const char *line, size_t *position, char *output,
-                          size_t output_size)
+static int read_csv_field(const char * line, size_t * position,
+                          char * output, size_t output_size)
 {
   size_t out = 0;
 
@@ -241,19 +237,21 @@ static int read_csv_field(const char *line, size_t *position, char *output,
   return 1;
 }
 
-static int parse_csv_line(const char *line, GameRecord *record)
+static int parse_csv_line(const char * line,
+                          GameRecord * record)
 {
   char fields[8][MAX_LINE_LENGTH];
 
   size_t position = 0;
 
-  char *endptr;
+  char * endptr;
 
   long value;
 
   for (int i = 0; i < 8; i++)
   {
-    if (!read_csv_field(line, &position, fields[i], sizeof(fields[i])))
+    if (!read_csv_field(line, &position, fields[i],
+                        sizeof(fields[i])))
     {
       return 0;
     }
@@ -329,13 +327,14 @@ static int parse_csv_line(const char *line, GameRecord *record)
   return 1;
 }
 
-static void initialize_leaderboard(Leaderboard *leaderboard)
+static void initialize_leaderboard(Leaderboard * leaderboard)
 {
   leaderboard->count = 0;
 }
 
-static int find_insertion_position(const Leaderboard *leaderboard,
-                                   const GameRecord  *record)
+static int
+find_insertion_position(const Leaderboard * leaderboard,
+                        const GameRecord *  record)
 {
   int position = 0;
 
@@ -352,8 +351,8 @@ static int find_insertion_position(const Leaderboard *leaderboard,
   return position;
 }
 
-static void insert_into_leaderboard(Leaderboard      *leaderboard,
-                                    const GameRecord *record)
+static void insert_into_leaderboard(Leaderboard *      leaderboard,
+                                    const GameRecord * record)
 {
   int position;
 
@@ -388,9 +387,9 @@ static void insert_into_leaderboard(Leaderboard      *leaderboard,
   leaderboard->records[position] = *record;
 }
 
-static void build_leaderboard(Leaderboard *leaderboard)
+static void build_leaderboard(Leaderboard * leaderboard)
 {
-  FILE *fp;
+  FILE * fp;
 
   char line[MAX_LINE_LENGTH];
 
@@ -425,7 +424,7 @@ static void build_leaderboard(Leaderboard *leaderboard)
   fclose(fp);
 }
 
-static void print_leaderboard(Leaderboard *leaderboard)
+static void print_leaderboard(Leaderboard * leaderboard)
 {
   printf("\n");
 
@@ -441,19 +440,22 @@ static void print_leaderboard(Leaderboard *leaderboard)
    * W          = 5
    * Date       = 21
    */
-  const char *separator = "+----+--------------------------+-----------+-------"
-                          "-+----------+-----+-----+---------------------+\n";
+  const char * separator
+      = "+----+--------------------------+-----------+-------"
+        "-+----------+-----+-----+---------------------+\n";
 
   printf("%s", separator);
 
-  printf("|  # |          Name            |   Diff    |  Score | Duration |  H "
+  printf("|  # |          Name            |   Diff    |  "
+         "Score | Duration |  H "
          " |  W  |        Date         |\n");
 
   printf("%s", separator);
 
   if (leaderboard->count == 0)
   {
-    printf("|    |                          |           |        |          |  "
+    printf("|    |                          |           |     "
+           "   |          |  "
            "   |     |                     |\n");
     printf("%s", separator);
 
@@ -462,7 +464,7 @@ static void print_leaderboard(Leaderboard *leaderboard)
 
   for (int i = 0; i < leaderboard->count; i++)
   {
-    GameRecord *record = &leaderboard->records[i];
+    GameRecord * record = &leaderboard->records[i];
 
     char name[25];
 
@@ -481,11 +483,12 @@ static void print_leaderboard(Leaderboard *leaderboard)
 
     char date[32] = "N/A";
 
-    struct tm *local_time = localtime(&record->started_at);
+    struct tm * local_time = localtime(&record->started_at);
 
     if (local_time != NULL)
     {
-      strftime(date, sizeof(date), "%Y-%m-%d %H:%M:%S", local_time);
+      strftime(date, sizeof(date), "%Y-%m-%d %H:%M:%S",
+               local_time);
     }
 
     char duration[16];
@@ -494,11 +497,15 @@ static void print_leaderboard(Leaderboard *leaderboard)
     long minutes       = total_seconds / 60;
     long seconds       = total_seconds % 60;
 
-    snprintf(duration, sizeof(duration), "%ld:%02ld", minutes, seconds);
+    snprintf(duration, sizeof(duration), "%ld:%02ld", minutes,
+             seconds);
 
-    printf("| %2d | %-24s | %-9s | %6d | %8s | %3d | %3d | %-19s |\n", i + 1,
-           name, difficulty_to_string(record->difficulty), record->score,
-           duration, record->hint_used, record->wrong_guesses, date);
+    printf("| %2d | %-24s | %-9s | %6d | %8s | %3d | %3d | "
+           "%-19s |\n",
+           i + 1, name,
+           difficulty_to_string(record->difficulty),
+           record->score, duration, record->hint_used,
+           record->wrong_guesses, date);
 
     printf("%s", separator);
   }
