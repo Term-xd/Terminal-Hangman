@@ -4,43 +4,42 @@
 #include <stddef.h>
 #include <stdint.h>
 
-
 /* Three distinct entry types for different length buckets */
 typedef struct
 {
-  const char *word;
-  int         length;
-  uint32_t    cat_start;
-  uint32_t    cat_count;
+  const char * word;
+  int          length;
+  uint32_t     cat_start;
+  uint32_t     cat_count;
 } WordEntryShort;
 
 typedef struct
 {
-  const char *word;
-  int         length;
-  uint32_t    cat_start;
-  uint32_t    cat_count;
+  const char * word;
+  int          length;
+  uint32_t     cat_start;
+  uint32_t     cat_count;
 } WordEntryMid;
 
 typedef struct
 {
-  const char *word;
-  int         length;
-  uint32_t    cat_start;
-  uint32_t    cat_count;
+  const char * word;
+  int          length;
+  uint32_t     cat_start;
+  uint32_t     cat_count;
 } WordEntryLong;
 
 /* Universal */
 typedef struct
 {
-  const char *word;
-  int         length;
-  uint32_t    cat_start;
-  uint32_t    cat_count;
+  const char * word;
+  int          length;
+  uint32_t     cat_start;
+  uint32_t     cat_count;
 } WordEntry;
 
 /* Global pooled categories */
-extern const char  *category_pool[];
+extern const char * category_pool[];
 extern const size_t category_pool_count;
 
 /* Short group */
