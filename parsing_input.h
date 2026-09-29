@@ -3,6 +3,7 @@
 
 #include "data.h"
 
-void parse_input(GameState *game, char input[128], char *last_guessed);
+void parse_input(GameState * game, char input[128],
+                 char * last_guessed);
 
-#endif // PARSING_INPUT_H
+#endif  // PARSING_INPUT_H
